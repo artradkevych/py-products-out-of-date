@@ -31,6 +31,7 @@ def test_no_outdated_products_returns_empty_list(
     today = datetime.date(2022, 2, 1)
     with mock.patch("app.main.datetime.date") as mock_date:
         mock_date.today.return_value = today
+        mock_date.side_effect = lambda *a, **kw: datetime.date(*a, **kw)
         assert outdated_products(products_template) == []
 
 
@@ -40,4 +41,5 @@ def test_outdated_products_returns_products(
     today = datetime.date(2022, 2, 10)
     with mock.patch("app.main.datetime.date") as mock_date:
         mock_date.today.return_value = today
+        mock_date.side_effect = lambda *a, **kw: datetime.date(*a, **kw)
         assert outdated_products(products_template) == ["chicken", "duck"]
