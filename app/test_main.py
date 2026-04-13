@@ -1,7 +1,7 @@
 import pytest
 from unittest import mock
 from app.main import outdated_products
-import datetime
+from datetime import date
 
 
 @pytest.fixture
@@ -9,17 +9,17 @@ def products_template() -> list[dict]:
     return [
         {
             "name": "salmon",
-            "expiration_date": datetime.date(2022, 2, 10),
+            "expiration_date": date(2022, 2, 10),
             "price": 600
         },
         {
             "name": "chicken",
-            "expiration_date": datetime.date(2022, 2, 5),
+            "expiration_date": date(2022, 2, 5),
             "price": 120
         },
         {
             "name": "duck",
-            "expiration_date": datetime.date(2022, 2, 1),
+            "expiration_date": date(2022, 2, 1),
             "price": 160
         }
     ]
@@ -28,18 +28,16 @@ def products_template() -> list[dict]:
 def test_no_outdated_products_returns_empty_list(
         products_template: list[dict]
 ) -> None:
-    today = datetime.date(2022, 2, 1)
     with mock.patch("app.main.datetime.date") as mock_date:
-        mock_date.today.return_value = today
-        mock_date.side_effect = lambda *a, **kw: datetime.date(*a, **kw)
+        mock_date.today.return_value = date(2022, 2, 1)
+        mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
         assert outdated_products(products_template) == []
 
 
 def test_outdated_products_returns_products(
         products_template: list[dict]
 ) -> None:
-    today = datetime.date(2022, 2, 10)
     with mock.patch("app.main.datetime.date") as mock_date:
-        mock_date.today.return_value = today
-        mock_date.side_effect = lambda *a, **kw: datetime.date(*a, **kw)
+        mock_date.today.return_value = date(2022, 2, 10)
+        mock_date.side_effect = lambda *a, **kw: date(*a, **kw)
         assert outdated_products(products_template) == ["chicken", "duck"]
