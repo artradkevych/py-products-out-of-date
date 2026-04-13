@@ -20,7 +20,10 @@ def test_no_outdated_products_returns_empty_list() -> None:
 def test_outdated_products_returns_products() -> None:
     products = [
         {"name": "salmon", "expiration_date": date(2022, 2, 10), "price": 600},
-        {"name": "chicken", "expiration_date": date(2022, 1, 30), "price": 120},
+        {
+            "name": "chicken",
+            "expiration_date": date(2022, 1, 30),
+            "price": 120},
         {"name": "duck", "expiration_date": date(2022, 1, 25), "price": 160},
     ]
 
